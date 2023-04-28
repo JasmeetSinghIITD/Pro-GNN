@@ -94,9 +94,13 @@ if args.only_gcn:
     perturbed_adj, features, labels = preprocess(perturbed_adj, features, labels, preprocess_adj=False, sparse=True, device=device)
     model.fit(features, perturbed_adj, labels, idx_train, idx_val, verbose=True, train_iters=args.epochs)
     model.test(idx_test)
+    acc = model.test(idx_test)
+    print("Test Accuracy: {:.4f}".format(acc))
 else:
     perturbed_adj, features, labels = preprocess(perturbed_adj, features, labels, preprocess_adj=False, device=device)
     prognn = ProGNN(model, args, device)
     prognn.fit(features, perturbed_adj, labels, idx_train, idx_val)
     prognn.test(features, labels, idx_test)
+    acc = prognn.test(features, labels, idx_test)
+    print("Test Accuracy: {:.4f}".format(acc))
 
